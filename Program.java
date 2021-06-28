@@ -124,18 +124,12 @@ public class Program extends Application {
 
         stage.setScene(new Scene(root));
         stage.sizeToScene();
-        stage.setTitle("Josefins kartprogram");
+        stage.setTitle("Josefin's mapProgram");
         stage.setOnCloseRequest(new ExitTopHandler());
         stage.show();
     }
 
-    // klar med att ladda upp bilden
-    // TODO testa
-    //kan väljas även när man har en karta inladdad och platser skapade.
-    //I så fall måste det aktuella ”dokumentet” avslutas innan det nya kan
-    //användas. Användaren bör ges samma varning som vid Exit i fall det finns
-    //osparade ändringar. Dessutom måste alla datastrukturer som innehåller
-    //platser tömmas, så att de nya kan skapas/laddas in.
+    //Loads image as map (background image)
     class LoadMapHandler implements EventHandler<ActionEvent>{
         @Override public void handle(ActionEvent event){
             if (unsavedWarning(event)) return;
@@ -155,12 +149,7 @@ public class Program extends Application {
 
     }
 
-    // TODO testa
-    //kan väljas även när man har en karta inladdad och platser skapade.
-    //I så fall måste det aktuella ”dokumentet” avslutas innan det nya kan
-    //användas. Användaren bör ges samma varning som vid Exit i fall det finns
-    //osparade ändringar. Dessutom måste alla datastrukturer som innehåller
-    //platser tömmas, så att de nya kan skapas/laddas in.
+    //Loads places on map
     class LoadPlacesHandler implements EventHandler<ActionEvent>{
         @Override public void handle(ActionEvent event) {
             if (unsavedWarning(event)) return;
@@ -219,13 +208,7 @@ public class Program extends Application {
         }
     }
 
-    // TODO spara som en textfil
-    //Platserna ska sparas på en textfil, med en plats per rad.
-    //På varje rad ska platsens värden skrivas ut i en kommaseparerad
-    //lista, med platsens typ (Named eller Described), platsens kategori
-    //(Bus, Underground, Train eller None om platsen saknar kategori),
-    //x-koordinaten, y-koordinaten, platsens namn och (om platsen är av
-    //typen Described) dess beskrivning
+    //Saves places as a text file
     class SaveHandler implements EventHandler<ActionEvent>{
         @Override public void handle(ActionEvent event){
             try {
@@ -260,14 +243,14 @@ public class Program extends Application {
         }
     }
 
-    //KLART
+    //Exit on button
     class ExitHandler implements EventHandler<ActionEvent>{
         @Override public void handle(ActionEvent event){
             stage.fireEvent(new WindowEvent(stage, WindowEvent.WINDOW_CLOSE_REQUEST));
         }
     }
 
-    //KLART
+    //Exit in right top corner
     class ExitTopHandler implements EventHandler<WindowEvent>{
         @Override public void handle(WindowEvent event){
             if (changed){
@@ -279,7 +262,6 @@ public class Program extends Application {
         }
     }
 
-    //KLART!
     class NewHandler implements EventHandler<ActionEvent>{
         @Override public void handle(ActionEvent event){
             center.setOnMouseClicked(new NewClickHandler());
@@ -287,7 +269,7 @@ public class Program extends Application {
         }
     }
 
-    //KLAR!
+    //Search place by name
     class SearchHandler implements EventHandler<ActionEvent>{
         @Override public void handle(ActionEvent event) {
             unMarkPlaces();
@@ -306,10 +288,7 @@ public class Program extends Application {
         }
     }
 
-    // KLAR
-    //gömmer alla markerade platser och gör dem avmarkerade. Även
-    //denna operation borde stödjas av någon lämplig datastruktur så
-    //att man inte behöver gå igenom alla platser utan bara de som är markerade.
+    //Hides marked places
     class HideHandler implements EventHandler<ActionEvent>{
         @Override public void handle(ActionEvent event){
             for (Place place : markedPlaces){
@@ -320,10 +299,7 @@ public class Program extends Application {
         }
     }
 
-    //TODO testa
-    //tar bort alla markerade platser. Platsen ska tas bort från alla
-    //datastrukturer där de kan finnas, de ska alltså inte bara döljas så
-    //att de inte syns på kartan.
+    //Removes marked places
     class RemoveHandler implements EventHandler<ActionEvent>{
         @Override public void handle(ActionEvent event){
             if (markedPlaces.isEmpty()){
@@ -339,7 +315,6 @@ public class Program extends Application {
         }
     }
 
-    // TODO testa
     //I den här dialogen bör det kontrolleras att de inmatade värdena är numeriska
     class CoordinatesHandler implements EventHandler<ActionEvent>{
         @Override public void handle(ActionEvent event){
@@ -367,7 +342,7 @@ public class Program extends Application {
         }
     }
 
-    //KLAR!
+    //Hide places by category
     class HideCategoryHandler implements EventHandler<ActionEvent>{
         @Override public void handle(ActionEvent event) {
             Category category = categories.getSelectionModel().getSelectedItem();
@@ -380,7 +355,7 @@ public class Program extends Application {
         }
     }
 
-    //TODO testa
+    //Create new place
     class NewClickHandler implements EventHandler<MouseEvent> {
         @Override public void handle(MouseEvent event) {
             int x = (int) event.getX();
@@ -436,7 +411,7 @@ public class Program extends Application {
         }
     }
 
-    //KLAR
+    //Sets places visible
     class ListHandler implements ChangeListener<Category> {
         @Override public void changed(ObservableValue obs, Category oldValue, Category newValue){
             if (byCategory.containsKey(newValue)){
@@ -448,6 +423,7 @@ public class Program extends Application {
         }
     }
 
+    //Adds place to data collections
     private void addPlace(Place place){
         places.put(place.getPosition(), place);
         addPlaceToCategory(place);
@@ -498,7 +474,6 @@ public class Program extends Application {
         return false;
     }
 
-    //TODO testa
     private void removeAllPlaces(){
         for (Map.Entry<Position, Place> positionPlaceEntry : places.entrySet()) {
             Place place = (Place) ((Map.Entry) positionPlaceEntry).getValue();
